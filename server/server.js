@@ -6,6 +6,7 @@ const { testConnection } = require('./config/database');
 const apiRoutes = require('./routes/api');
 const reportRoutes = require('./routes/report');
 const repairRoutes = require('./routes/repair');
+const machineRoutes = require('./routes/machine');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -63,6 +64,7 @@ app.get('/', (req, res) => {
 app.use('/api', apiRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/repairs', repairRoutes);
+app.use('/api/machines', machineRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
