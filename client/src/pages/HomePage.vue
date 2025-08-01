@@ -39,7 +39,7 @@
               </svg>
               Buat Laporan
             </router-link>
-            <router-link to="/repair" class="flex items-center gap-2 px-7 py-4 rounded-xl font-semibold text-lg shadow transition-all duration-300 hover:scale-105 bg-orange-600/90 hover:bg-orange-700/90 text-white animate-pulse-slow">
+            <router-link to="/technician" class="flex items-center gap-2 px-7 py-4 rounded-xl font-semibold text-lg shadow transition-all duration-300 hover:scale-105 bg-orange-600/90 hover:bg-orange-700/90 text-white animate-pulse-slow">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13zm-6 6h6v-6H3v6z" />
               </svg>

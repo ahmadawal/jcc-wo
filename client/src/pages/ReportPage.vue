@@ -1,9 +1,23 @@
 <template>
   <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8 mb-8">
     <div class="flex items-center justify-between mb-6">
-      <router-link to="/" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 text-2xl text-gray-700 transition-all duration-200" style="text-decoration: none;">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      <router-link
+        to="/"
+        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 text-2xl text-gray-700 transition-all duration-200"
+        style="text-decoration: none"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </router-link>
       <h2 class="text-2xl font-bold">Laporan Kerusakan Mesin</h2>
@@ -15,7 +29,9 @@
     <form @submit.prevent="handleSubmit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label class="block text-sm font-medium mb-1">Tanggal Laporan *</label>
+          <label class="block text-sm font-medium mb-1"
+            >Tanggal Laporan *</label
+          >
           <input type="date" v-model="form.tanggal" class="input" required />
         </div>
         <div>
@@ -23,21 +39,24 @@
           <input type="time" v-model="form.waktu" class="input" required />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1">Shift</label>
-          <select v-model="form.shift" class="input" required>
-            <option value="">Pilih Shift</option>
-            <option value="I">I</option>
-            <option value="II">II</option>
-            <option value="III">III</option>
-          </select>
-        </div>
-        <div>
           <label class="block text-sm font-medium mb-1">Nama Pelapor *</label>
-          <input type="text" v-model="form.nama_pelapor" class="input" required placeholder="Masukkan nama pelapor" />
+          <input
+            type="text"
+            v-model="form.nama_pelapor"
+            class="input"
+            required
+            placeholder="Masukkan nama pelapor"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Nama Mesin *</label>
-          <input type="text" v-model="form.nama_mesin" class="input" required placeholder="Masukkan nama mesin" />
+          <input
+            type="text"
+            v-model="form.nama_mesin"
+            class="input"
+            required
+            placeholder="Masukkan nama mesin"
+          />
         </div>
         <div>
           <label class="block text-sm font-medium mb-1">Plant *</label>
@@ -53,17 +72,39 @@
             <option value="SC">SC</option>
           </select>
         </div>
+        <div>
+          <label>Jenis Perbaikan *</label>
+          <select v-model="form.jenis_perbaikan" class="input" required>
+            <option value="">Pilih Perbaikan</option>
+            <option value="elektrikal">Elektrikal</option>
+            <option value="mekanikal">Mekanikal</option>
+            <option value="utility">Utility</option>
+            <option value="maintenance">Maintenance</option>
+          </select>
+        </div>
       </div>
       <div class="mb-4">
         <label class="block text-sm font-medium mb-1">Bagian yang Rusak</label>
-        <input type="text" v-model="form.bagian_rusak" class="input" placeholder="Contoh: Motor Bearing, Hydraulic Pump, dll" />
+        <input
+          type="text"
+          v-model="form.bagian_rusak"
+          class="input"
+          placeholder="Contoh: Motor Bearing, Hydraulic Pump, dll"
+        />
       </div>
       <div class="mb-4">
         <label class="block text-sm font-medium mb-1">Detail Kerusakan</label>
-        <textarea v-model="form.detail_kerusakan" class="input" rows="3" placeholder="Jelaskan detail kerusakan yang terjadi..."></textarea>
+        <textarea
+          v-model="form.detail_kerusakan"
+          class="input"
+          rows="3"
+          placeholder="Jelaskan detail kerusakan yang terjadi..."
+        ></textarea>
       </div>
       <div class="flex justify-end gap-2 mt-6">
-        <button type="button" class="btn-secondary" @click="resetForm">Batal</button>
+        <button type="button" class="btn-secondary" @click="resetForm">
+          Batal
+        </button>
         <button type="submit" class="btn-primary">Kirim Laporan</button>
       </div>
     </form>
@@ -71,38 +112,79 @@
       <h3 class="text-lg font-semibold mb-2">Daftar Laporan</h3>
       <!-- Search input -->
       <div class="mb-4 flex items-center">
-        <input v-model="reportSearch" type="text" class="input w-72" placeholder="Cari mesin, plant, bagian rusak, pelapor, status..." />
+        <input
+          v-model="reportSearch"
+          type="text"
+          class="input w-72"
+          placeholder="Cari mesin, plant, bagian rusak, pelapor, status..."
+        />
       </div>
       <table class="w-full text-sm border">
         <thead>
           <tr class="bg-gray-100">
-            <th class="p-2 border cursor-pointer" @click="setReportSort('tanggal')">
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('tanggal')"
+            >
               Tanggal
-              <span v-if="reportSortKey === 'tanggal'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
+              <span v-if="reportSortKey === 'tanggal'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
             </th>
-            <th class="p-2 border cursor-pointer" @click="setReportSort('waktu')">
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('waktu')"
+            >
               Waktu
-              <span v-if="reportSortKey === 'waktu'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
+              <span v-if="reportSortKey === 'waktu'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
             </th>
-            <th class="p-2 border cursor-pointer" @click="setReportSort('shift')">
-              Shift
-              <span v-if="reportSortKey === 'shift'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
-            </th>
-            <th class="p-2 border cursor-pointer" @click="setReportSort('nama_mesin')">
+
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('nama_mesin')"
+            >
               Nama Mesin
-              <span v-if="reportSortKey === 'nama_mesin'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
+              <span v-if="reportSortKey === 'nama_mesin'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
             </th>
-            <th class="p-2 border cursor-pointer" @click="setReportSort('plant')">
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('plant')"
+            >
               Plant
-              <span v-if="reportSortKey === 'plant'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
+              <span v-if="reportSortKey === 'plant'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
             </th>
-            <th class="p-2 border cursor-pointer" @click="setReportSort('bagian_rusak')">
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('bagian_rusak')"
+            >
               Bagian Rusak
-              <span v-if="reportSortKey === 'bagian_rusak'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
+              <span v-if="reportSortKey === 'bagian_rusak'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
             </th>
-            <th class="p-2 border cursor-pointer" @click="setReportSort('status')">
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('detail_kerusakan')"
+            >
+              Detail
+              <span v-if="reportSortKey === 'detail_kerusakan'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
+            </th>
+            <th
+              class="p-2 border cursor-pointer"
+              @click="setReportSort('status')"
+            >
               Status
-              <span v-if="reportSortKey === 'status'">{{ reportSortOrder === 'asc' ? '▲' : '▼' }}</span>
+              <span v-if="reportSortKey === 'status'">{{
+                reportSortOrder === "asc" ? "▲" : "▼"
+              }}</span>
             </th>
             <th class="p-2 border">Aksi</th>
           </tr>
@@ -111,20 +193,26 @@
           <tr v-for="report in paginatedReports" :key="report.id">
             <td class="p-2 border">{{ formatDateUTC(report.tanggal) }}</td>
             <td class="p-2 border">{{ report.waktu }}</td>
-            <td class="p-2 border">{{ report.shift }}</td>
             <td class="p-2 border">{{ report.nama_mesin }}</td>
             <td class="p-2 border">{{ report.plant }}</td>
             <td class="p-2 border">{{ report.bagian_rusak }}</td>
+            <td class="p-2 border">{{ report.detail_kerusakan }}</td>
             <td class="p-2 border">
               <span :class="statusClass(report.status)">
-                {{ report.status || 'New' }}
+                {{ report.status || "New" }}
               </span>
             </td>
             <td class="p-2 border relative group">
-              <div v-if="hoveredAction === 'edit-' + report.id" class="absolute -top-10 left-3 bg-gray-800 text-white text-xs rounded px-3 py-1 shadow-lg z-10 transition-opacity duration-200 opacity-100 pointer-events-none">
+              <div
+                v-if="hoveredAction === 'edit-' + report.id"
+                class="absolute -top-10 left-3 bg-gray-800 text-white text-xs rounded px-3 py-1 shadow-lg z-10 transition-opacity duration-200 opacity-100 pointer-events-none"
+              >
                 Edit
               </div>
-              <div v-if="hoveredAction === 'hapus-' + report.id" class="absolute -top-10 right-3 bg-gray-800 text-white text-xs rounded px-3 py-1 shadow-lg z-10 transition-opacity duration-200 opacity-100 pointer-events-none">
+              <div
+                v-if="hoveredAction === 'hapus-' + report.id"
+                class="absolute -top-10 right-3 bg-gray-800 text-white text-xs rounded px-3 py-1 shadow-lg z-10 transition-opacity duration-200 opacity-100 pointer-events-none"
+              >
                 Hapus
               </div>
               <button
@@ -134,8 +222,18 @@
                 @mouseleave="hoveredAction = null"
                 title="Edit"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13zm-6 6h6v-6H3v6z" />
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13zm-6 6h6v-6H3v6z"
+                  />
                 </svg>
               </button>
               <button
@@ -145,8 +243,18 @@
                 @mouseleave="hoveredAction = null"
                 title="Hapus"
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </td>
@@ -154,11 +262,38 @@
         </tbody>
       </table>
       <!-- Pagination Controls for Reports -->
-      <div v-if="reportTotalPages > 1" class="flex justify-between items-center mt-2 mb-6">
+      <div
+        v-if="reportTotalPages > 1"
+        class="flex justify-between items-center mt-2 mb-6"
+      >
         <div class="flex gap-2">
-          <button class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="reportPage === 1" @click="goToReportPage(reportPage - 1)">&laquo;</button>
-          <button v-for="page in reportTotalPages" :key="page" class="px-3 py-1 rounded" :class="reportPage === page ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'" @click="goToReportPage(page)">{{ page }}</button>
-          <button class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300" :disabled="reportPage === reportTotalPages" @click="goToReportPage(reportPage + 1)">&raquo;</button>
+          <button
+            class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+            :disabled="reportPage === 1"
+            @click="goToReportPage(reportPage - 1)"
+          >
+            &laquo;
+          </button>
+          <button
+            v-for="page in reportTotalPages"
+            :key="page"
+            class="px-3 py-1 rounded"
+            :class="
+              reportPage === page
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 hover:bg-gray-200'
+            "
+            @click="goToReportPage(page)"
+          >
+            {{ page }}
+          </button>
+          <button
+            class="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+            :disabled="reportPage === reportTotalPages"
+            @click="goToReportPage(reportPage + 1)"
+          >
+            &raquo;
+          </button>
         </div>
         <div>
           <label class="mr-2">Tampil</label>
@@ -182,109 +317,115 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed } from 'vue'
-import axios from 'axios'
-import ConfirmModal from '../components/ConfirmModal.vue'
+import { ref, reactive, onMounted, computed } from "vue";
+import axios from "axios";
+import ConfirmModal from "../components/ConfirmModal.vue";
 
 export default {
-  name: 'ReportPage',
+  name: "ReportPage",
   components: { ConfirmModal },
   setup() {
-    const mesinList = [
-      'Mesin A', 'Mesin B', 'Mesin C', 'Mesin D'
-    ]
+    const mesinList = ["Mesin A", "Mesin B", "Mesin C", "Mesin D"];
     const form = reactive({
       id: null,
-      tanggal: '',
-      waktu: '',
-      shift: '',
-      nama_pelapor: '',
-      nama_mesin: '',
-      plant: '',
-      bagian_rusak: '',
-      detail_kerusakan: '',
+      tanggal: "",
+      waktu: "",
+      shift: "",
+      nama_pelapor: "",
+      nama_mesin: "",
+      plant: "",
+      jenis_perbaikan: "",
+      bagian_rusak: "",
+      detail_kerusakan: "",
       // status removed from form
-    })
-    const reports = ref([])
+    });
+    const reports = ref([]);
     // Search and sort state for reports
-    const reportSearch = ref('')
-    const reportSortKey = ref('tanggal')
-    const reportSortOrder = ref('desc')
+    const reportSearch = ref("");
+    const reportSortKey = ref("tanggal");
+    const reportSortOrder = ref("desc");
     // Pagination state
-    const reportPage = ref(1)
-    const reportPageSize = ref(10)
+    const reportPage = ref(1);
+    const reportPageSize = ref(10);
     // Filtered reports by search
     const filteredReports = computed(() => {
-      if (!reportSearch.value) return reports.value
-      const term = reportSearch.value.toLowerCase()
-      return reports.value.filter(r =>
-        (r.nama_mesin && r.nama_mesin.toLowerCase().includes(term)) ||
-        (r.plant && r.plant.toLowerCase().includes(term)) ||
-        (r.bagian_rusak && r.bagian_rusak.toLowerCase().includes(term)) ||
-        (r.detail_kerusakan && r.detail_kerusakan.toLowerCase().includes(term)) ||
-        (r.nama_pelapor && r.nama_pelapor.toLowerCase().includes(term)) ||
-        (r.status && r.status.toLowerCase().includes(term))
-      )
-    })
+      if (!reportSearch.value) return reports.value;
+      const term = reportSearch.value.toLowerCase();
+      return reports.value.filter(
+        (r) =>
+          (r.nama_mesin && r.nama_mesin.toLowerCase().includes(term)) ||
+          (r.plant && r.plant.toLowerCase().includes(term)) ||
+          (r.bagian_rusak && r.bagian_rusak.toLowerCase().includes(term)) ||
+          (r.detail_kerusakan &&
+            r.detail_kerusakan.toLowerCase().includes(term)) ||
+          (r.nama_pelapor && r.nama_pelapor.toLowerCase().includes(term)) ||
+          (r.status && r.status.toLowerCase().includes(term))
+      );
+    });
     // Sorted reports
     const sortedReports = computed(() => {
-      if (!filteredReports.value.length || !reportSortKey.value) return filteredReports.value
+      if (!filteredReports.value.length || !reportSortKey.value)
+        return filteredReports.value;
       return [...filteredReports.value].sort((a, b) => {
-        let valA = a[reportSortKey.value]
-        let valB = b[reportSortKey.value]
-        if (valA == null) valA = ''
-        if (valB == null) valB = ''
-        if (reportSortKey.value.includes('tanggal')) {
-          valA = new Date(valA)
-          valB = new Date(valB)
+        let valA = a[reportSortKey.value];
+        let valB = b[reportSortKey.value];
+        if (valA == null) valA = "";
+        if (valB == null) valB = "";
+        if (reportSortKey.value.includes("tanggal")) {
+          valA = new Date(valA);
+          valB = new Date(valB);
         }
-        if (valA < valB) return reportSortOrder.value === 'asc' ? -1 : 1
-        if (valA > valB) return reportSortOrder.value === 'asc' ? 1 : -1
-        return 0
-      })
-    })
+        if (valA < valB) return reportSortOrder.value === "asc" ? -1 : 1;
+        if (valA > valB) return reportSortOrder.value === "asc" ? 1 : -1;
+        return 0;
+      });
+    });
     // Paginated reports (use sortedReports)
     const paginatedReports = computed(() => {
-      const start = (reportPage.value - 1) * reportPageSize.value
-      return sortedReports.value.slice(start, start + reportPageSize.value)
-    })
-    const reportTotalPages = computed(() => Math.ceil(sortedReports.value.length / reportPageSize.value))
+      const start = (reportPage.value - 1) * reportPageSize.value;
+      return sortedReports.value.slice(start, start + reportPageSize.value);
+    });
+    const reportTotalPages = computed(() =>
+      Math.ceil(sortedReports.value.length / reportPageSize.value)
+    );
     const setReportSort = (key) => {
       if (reportSortKey.value === key) {
-        reportSortOrder.value = reportSortOrder.value === 'asc' ? 'desc' : 'asc'
+        reportSortOrder.value =
+          reportSortOrder.value === "asc" ? "desc" : "asc";
       } else {
-        reportSortKey.value = key
-        reportSortOrder.value = 'asc'
+        reportSortKey.value = key;
+        reportSortOrder.value = "asc";
       }
-    }
+    };
     const goToReportPage = (page) => {
-      if (page >= 1 && page <= reportTotalPages.value) reportPage.value = page
-    }
-    const previewUrl = ref('')
+      if (page >= 1 && page <= reportTotalPages.value) reportPage.value = page;
+    };
+    const previewUrl = ref("");
     // Remove fileInput and openCamera
 
     const fetchReports = async () => {
-      const { data } = await axios.get('/api/reports')
-      reports.value = data.data
-    }
+      const { data } = await axios.get("/api/reports");
+      reports.value = data.data;
+    };
 
     // Remove handleFileChange
 
     const resetForm = () => {
       Object.assign(form, {
         id: null,
-        tanggal: '',
-        waktu: '',
-        shift: '',
-        nama_pelapor: '',
-        nama_mesin: '',
-        plant: '',
-        bagian_rusak: '',
-        detail_kerusakan: ''
+        tanggal: "",
+        waktu: "",
+        shift: "",
+        nama_pelapor: "",
+        nama_mesin: "",
+        plant: "",
+        jenis_perbaikan: "",
+        bagian_rusak: "",
+        detail_kerusakan: "",
         // status removed
-      })
-      previewUrl.value = ''
-    }
+      });
+      previewUrl.value = "";
+    };
 
     const handleSubmit = async () => {
       try {
@@ -304,71 +445,81 @@ export default {
         }
         // Ensure 'waktu' is formatted as HH:MM:SS or null
         if (cleanForm.waktu && /^\d{2}:\d{2}$/.test(cleanForm.waktu)) {
-          cleanForm.waktu = cleanForm.waktu + ':00';
+          cleanForm.waktu = cleanForm.waktu + ":00";
         }
         if (!cleanForm.waktu) cleanForm.waktu = null;
         // Set all undefined fields to null
-        Object.keys(cleanForm).forEach(key => {
-          if (typeof cleanForm[key] === 'undefined') cleanForm[key] = null;
+        Object.keys(cleanForm).forEach((key) => {
+          if (typeof cleanForm[key] === "undefined") cleanForm[key] = null;
         });
         if (form.id) {
           await axios.put(`/api/reports/${form.id}`, cleanForm);
-          window.$toast.success('Berhasil!', 'Laporan berhasil diperbarui');
+          window.$toast.success("Berhasil!", "Laporan berhasil diperbarui");
         } else {
-          await axios.post('/api/reports', cleanForm);
-          window.$toast.success('Berhasil!', 'Laporan kerusakan berhasil dikirim');
+          await axios.post("/api/reports", cleanForm);
+          window.$toast.success(
+            "Berhasil!",
+            "Laporan kerusakan berhasil dikirim"
+          );
         }
         await fetchReports();
         resetForm();
       } catch (error) {
-        window.$toast.error('Gagal!', 'Gagal menyimpan laporan. Pastikan semua data sudah benar.');
+        window.$toast.error(
+          "Gagal!",
+          "Gagal menyimpan laporan. Pastikan semua data sudah benar."
+        );
         console.error(error);
       }
-    }
+    };
 
     const editReport = (report) => {
-      Object.assign(form, report)
-      previewUrl.value = report.foto_url || ''
-    }
+      Object.assign(form, report);
+      previewUrl.value = report.foto_url || "";
+    };
 
-    const showConfirm = ref(false)
-    const reportIdToDelete = ref(null)
+    const showConfirm = ref(false);
+    const reportIdToDelete = ref(null);
 
     const deleteReport = (id) => {
-      showConfirm.value = true
-      reportIdToDelete.value = id
-    }
+      showConfirm.value = true;
+      reportIdToDelete.value = id;
+    };
     const confirmDelete = async () => {
-      showConfirm.value = false
+      showConfirm.value = false;
       try {
-        await axios.delete(`/api/reports/${reportIdToDelete.value}`)
-        await fetchReports()
-        window.$toast.success('Berhasil!', 'Laporan berhasil dihapus')
+        await axios.delete(`/api/reports/${reportIdToDelete.value}`);
+        await fetchReports();
+        window.$toast.success("Berhasil!", "Laporan berhasil dihapus");
       } catch (error) {
-        window.$toast.error('Gagal!', 'Gagal menghapus laporan')
-        console.error(error)
+        window.$toast.error("Gagal!", "Gagal menghapus laporan");
+        console.error(error);
       }
-    }
+    };
 
     // Remove openCamera
 
-    onMounted(fetchReports)
+    onMounted(fetchReports);
 
     const formatDateUTC = (dateStr) => {
-      if (!dateStr) return '';
+      if (!dateStr) return "";
       const date = new Date(dateStr);
       return date.toISOString().slice(0, 10);
-    }
+    };
 
     const statusClass = (status) => {
-      if (status === 'Selesai') return 'bg-green-200 text-green-800 font-semibold px-2 py-1 rounded';
-      if (status === 'Proses') return 'bg-yellow-200 text-yellow-800 font-semibold px-2 py-1 rounded';
-      if (status === 'Pending') return 'bg-orange-200 text-orange-800 font-semibold px-2 py-1 rounded';
-      if (status === 'New') return 'bg-blue-200 text-blue-800 font-semibold px-2 py-1 rounded';
-      return 'bg-gray-200 text-gray-800 font-semibold px-2 py-1 rounded';
-    }
+      if (status === "Selesai")
+        return "bg-green-200 text-green-800 font-semibold px-2 py-1 rounded";
+      if (status === "Proses")
+        return "bg-yellow-200 text-yellow-800 font-semibold px-2 py-1 rounded";
+      if (status === "Pending")
+        return "bg-orange-200 text-orange-800 font-semibold px-2 py-1 rounded";
+      if (status === "New")
+        return "bg-blue-200 text-blue-800 font-semibold px-2 py-1 rounded";
+      return "bg-gray-200 text-gray-800 font-semibold px-2 py-1 rounded";
+    };
 
-    const hoveredAction = ref(null)
+    const hoveredAction = ref(null);
 
     return {
       form,
@@ -396,9 +547,9 @@ export default {
       goToReportPage,
       filteredReports,
       sortedReports,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -412,7 +563,7 @@ export default {
   @apply bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold transition-all duration-200;
 }
 .material-icons {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -421,7 +572,7 @@ export default {
   text-transform: none;
   display: inline-block;
   direction: ltr;
-  -webkit-font-feature-settings: 'liga';
+  -webkit-font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
 }
-</style> 
+</style>
