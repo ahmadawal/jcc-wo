@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-12 mb-8 text-center relative"
-  >
+  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8 mb-8">
     <div class="">
       <div class="flex items-center justify-between">
         <router-link
@@ -31,34 +29,44 @@
           </h1>
         </div>
       </div>
+      <div class="flex justify-center">
+        <div class="flex flex-col sm:flex-row md:flex-row gap-3">
+          <!-- Electrical Button -->
+          <router-link
+            to="/repair/electrical"
+            class="flex items-center gap-3 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            <Zap class="w-5 h-5" />
+            Electrical
+          </router-link>
 
-      <div class="flex flex-col sm:flex-row gap-4">
-        <!-- Electrical Button -->
-        <router-link
-          to="/repair"
-          class="flex items-center gap-3 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          <Zap class="w-5 h-5" />
-          Electrical
-        </router-link>
+          <!-- Maintenance Button -->
+          <router-link
+            to="/repair/mechanical"
+            class="flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+          >
+            <Wrench class="w-5 h-5" />
+            Mechanical
+          </router-link>
 
-        <!-- Maintenance Button -->
-        <button
-          @click="handleClick('maintenance')"
-          class="flex items-center gap-3 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-        >
-          <Wrench class="w-5 h-5" />
-          Maintenance
-        </button>
+          <!-- Utility Button -->
+          <router-link
+            to="/repair/utility"
+            class="flex items-center gap-3 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
+          >
+            <Settings class="w-5 h-5" />
+            Utility
+          </router-link>
 
-        <!-- Utility Button -->
-        <button
-          @click="handleClick('utility')"
-          class="flex items-center gap-3 px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
-        >
-          <Settings class="w-5 h-5" />
-          Utility
-        </button>
+          <!-- Calibration Button -->
+          <router-link
+            to="/repair/calibration"
+            class="flex items-center gap-3 px-6 py-3 bg-orange-600/90 hover:bg-orange-700/90 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
+          >
+            <Settings class="w-5 h-5" />
+            Calibration
+          </router-link>
+        </div>
       </div>
 
       <!-- Feedback Display -->
@@ -75,6 +83,7 @@
 <script>
 import { ref } from "vue";
 import { Zap, Wrench, Settings } from "lucide-vue-next";
+import router from "../router";
 
 export default {
   name: "ServiceButtons",

@@ -23,7 +23,7 @@
       <h2 class="text-2xl font-bold">Detail Perbaikan Mesin</h2>
       <span class="flex items-center text-orange-600 font-medium">
         <span class="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
-        Electrical Page
+        Calibration Page
       </span>
     </div>
     <div v-if="!selectedReportId">
@@ -585,7 +585,7 @@ export default {
     };
 
     const fetchReports = async () => {
-      const { data } = await axios.get("/api/electrical");
+      const { data } = await axios.get("/api/calibration");
       reports.value = data.data; // No filter, show all reports
       reportPage.value = 1; // Reset to first page on new data
     };
@@ -615,7 +615,7 @@ export default {
     const deleteRepair = async (id) => {
       if (confirm("Yakin ingin menghapus perbaikan ini?")) {
         try {
-          await axios.delete(`/api/electrical/${id}`);
+          await axios.delete(`/api/repairs/${id}`);
           await fetchRepairs(selectedReportId.value);
           await fetchReports(); // Refresh reports to show updated status
           resetForm();
@@ -673,7 +673,7 @@ export default {
           : cleanForm.nama_teknisi;
 
         if (form.id) {
-          await axios.put(`/api/electrical/${form.id}`, cleanForm);
+          await axios.put(`/api/repairs/${form.id}`, cleanForm);
           window.$toast.success("Berhasil!", "Perbaikan berhasil diperbarui");
         } else {
           await axios.post("/api/repairs", cleanForm);

@@ -49,16 +49,6 @@
           />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1">Nama Mesin *</label>
-          <input
-            type="text"
-            v-model="form.nama_mesin"
-            class="input"
-            required
-            placeholder="Masukkan nama mesin"
-          />
-        </div>
-        <div>
           <label class="block text-sm font-medium mb-1">Plant *</label>
           <select v-model="form.plant" class="input" required>
             <option value="">Pilih Plant</option>
@@ -73,13 +63,27 @@
           </select>
         </div>
         <div>
+          <label class="block text-sm font-medium mb-1">Mesin</label>
+          <select v-model="form.nama_mesin" class="input">
+            <option value="">Pilih Mesin</option>
+            <option
+              v-for="machine in machines"
+              :key="machine.id"
+              :value="machine.name"
+            >
+              {{ machine.name }}
+            </option>
+          </select>
+        </div>
+
+        <div>
           <label>Jenis Perbaikan *</label>
           <select v-model="form.jenis_perbaikan" class="input" required>
-            <option value="">Pilih Perbaikan</option>
-            <option value="elektrikal">Elektrikal</option>
-            <option value="mekanikal">Mekanikal</option>
-            <option value="utility">Utility</option>
-            <option value="maintenance">Maintenance</option>
+            <option value="">Pilih Jenis</option>
+            <option value="Elektrik">Elektrik</option>
+            <option value="Mekanik">Mekanik</option>
+            <option value="Utility">Utility</option>
+            <option value="Kalibrasi">Kalibrasi</option>
           </select>
         </div>
       </div>
@@ -325,7 +329,7 @@ export default {
   name: "ReportPage",
   components: { ConfirmModal },
   setup() {
-    const mesinList = ["Mesin A", "Mesin B", "Mesin C", "Mesin D"];
+    const machines = ref([]);
     const form = reactive({
       id: null,
       tanggal: "",
@@ -497,9 +501,19 @@ export default {
       }
     };
 
-    // Remove openCamera
+    const fetchMachines = async () => {
+      try {
+        const { data } = await axios.get("/api/machines");
+        machines.value = data.data;
+      } catch (error) {
+        console.error("Failed to fetch machines:", error);
+      }
+    };
 
-    onMounted(fetchReports);
+    onMounted(() => {
+      fetchReports();
+      fetchMachines();
+    });
 
     const formatDateUTC = (dateStr) => {
       if (!dateStr) return "";
@@ -523,7 +537,9 @@ export default {
 
     return {
       form,
-      mesinList,
+      machines,
+      fetchReports,
+      fetchMachines,
       reports,
       previewUrl,
       resetForm,
