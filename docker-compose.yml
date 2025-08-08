@@ -2,13 +2,24 @@ version: '3'
 services:
   backend:
     build: ./server
+    container_name: jcc-wo-backend-1
     ports:
       - "5000:5000"
+    networks:
+      - app-network
     volumes:
       - ./server:/app
   frontend:
     build: ./client
+    container_name: jcc-wo-frontend-1
     ports:
       - "3000:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
     volumes:
       - ./client:/app
+networks:
+  app-network:
+    driver: bridge
