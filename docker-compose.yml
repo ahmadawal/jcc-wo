@@ -27,8 +27,8 @@ services:
       - "3000:80"
       - "5000:5000"
     depends_on:
-      - wo-backend
-      - wo-frontend
+      - backend
+      - frontend
     networks:
       - webnet
 networks:
