@@ -5,12 +5,12 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     // port: 3000,
-    // host: '0.0.0.0', // Enable LAN access
+    // host: '192.168.10.15', // Enable LAN access
     proxy: {
       '/api': {
         target: 'http://wo-mt.jembo.com:5000',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
+        // rewrite: path => path.replace(/^\/api/, '')
       }
     }
   }
