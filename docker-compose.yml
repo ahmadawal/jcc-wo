@@ -2,24 +2,35 @@ version: '3'
 services:
   backend:
     build: ./server
-    container_name: jcc-wo-backend-1
+    container_name: wo-backend
     ports:
       - "5000:5000"
     networks:
-      - app-network
+      - webnet
     volumes:
       - ./server:/app
   frontend:
     build: ./client
-    container_name: jcc-wo-frontend-1
+    container_name: wo-frontend
     ports:
       - "3000:80"
     networks:
-      - app-network
+      - webnet
     depends_on:
       - backend
     volumes:
       - ./client:/app
+  nginx-proxy:
+    build: ./nginx
+    container_name: nginx-proxy
+    ports:
+      - "3000:80"
+      - "5000:5000"
+    depends_on:
+      - wo-backend
+      - wo-frontend
+    networks:
+      - webnet
 networks:
-  app-network:
+  webnet:
     driver: bridge
