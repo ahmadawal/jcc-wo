@@ -34,6 +34,8 @@ app.use(
     origin: [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
+      "http://wo-mt:3000",
+      "http://wo-mt.jembo.com:3000",
       /^http:\/\/192\.168\.\d+\.\d+:3000$/, // Allow any 192.168.x.x IP
       /^http:\/\/10\.\d+\.\d+\.\d+:3000$/, // Allow any 10.x.x.x IP
       /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:3000$/, // Allow 172.16-31.x.x IPs
@@ -114,9 +116,9 @@ const startServer = async () => {
     app.listen(PORT, "0.0.0.0", () => {
       console.log("🚀 Server is running!");
       console.log(`📍 Local: http://localhost:${PORT}`);
-      console.log(`🌐 Network: http://0.0.0.0:${PORT}`);
-      console.log(`🔗 API Base: http://localhost:${PORT}/api`);
-      console.log(`📊 Health Check: http://localhost:${PORT}/api/health`);
+      console.log(`🌐 Network: http://wo-mt.jembo.com:${PORT}`);
+      console.log(`🔗 API Base: http://wo-mt.jembo.com:${PORT}/api`);
+      console.log(`📊 Health Check: http://wo-mt.jembo.com:${PORT}/api/health`);
       console.log(`⏰ Started at: ${new Date().toISOString()}`);
       console.log(
         "💡 To access from other devices, use your computer's IP address"
