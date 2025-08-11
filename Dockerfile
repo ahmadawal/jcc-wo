@@ -6,7 +6,7 @@ WORKDIR /app
 
 # --- Install backend dependencies ---
 COPY server/package*.json ./backend/
-RUN cd backend && npm install
+RUN cd server && npm install
 
 # --- Install frontend dependencies and build ---
 COPY client/package*.json ./frontend/
@@ -15,8 +15,8 @@ COPY client ./frontend
 RUN cd frontend && npm run build
 
 # --- Copy backend and frontend code ---
-COPY backend ./backend
-COPY frontend ./frontend
+COPY server ./backend
+COPY client ./frontend
 
 # --- Add startup script ---
 COPY start.sh ./start.sh
