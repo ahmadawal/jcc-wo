@@ -5,8 +5,8 @@ services:
     build: .
     container_name: wo-webapp
     ports:
-      - "192.168.10.15:3000:3000"   # Vue
-      - "192.168.10.15:5000:5000"   # Express
+      - "3000:3000"   # Vue
+      - "5000:5000"   # Express
     networks:
       - appnet
     volumes:
