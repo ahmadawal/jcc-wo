@@ -20,7 +20,7 @@ COPY client ./client
 
 # Production stage
 FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/client/dist /usr/share/nginx/html
 
 # --- Add startup script ---
 COPY start.sh ./start.sh
