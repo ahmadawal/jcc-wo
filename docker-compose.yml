@@ -13,4 +13,5 @@ services:
       - .:/app
     restart: unless-stopped
   networks:
-    driver: bridge
+    appnet:
+      driver: bridge
