@@ -8,8 +8,8 @@ export default defineConfig({
     // host: '192.168.10.15', // Enable LAN access
     proxy: {
       '/api': {
-        target: 'http://wo-mt.jembo.com:5000',
-        // target: 'http://localhost:5000',
+        // target: 'http://wo-mt.jembo.com:5000',
+        target: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
         changeOrigin: true,
         // rewrite: path => path.replace(/^\/api/, '')
       }

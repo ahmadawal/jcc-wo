@@ -36,9 +36,9 @@ app.use(
       "http://127.0.0.1:3000",
       "http://wo-mt:5000",
       "http://wo-mt.jembo.com:5000",
-      /^http:\/\/192\.168\.\d+\.\d+:3000$/, // Allow any 192.168.x.x IP
+      /^http:\/\/192\.168\.\d+\.\d+:5000$/, // Allow any 192.168.x.x IP
       /^http:\/\/10\.\d+\.\d+\.\d+:3000$/, // Allow any 10.x.x.x IP
-      /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:3000$/, // Allow 172.16-31.x.x IPs
+      /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d+\.\d+:5000$/, // Allow 172.16-31.x.x IPs
     ],
     credentials: true,
   })
