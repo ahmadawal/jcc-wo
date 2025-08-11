@@ -4,7 +4,7 @@ services:
     build: ./server
     container_name: wo-backend
     ports:
-      - "5000:5000"
+      - "192.168.10.15:5000:5000"
     networks:
       - webnet
     volumes:
@@ -13,7 +13,7 @@ services:
     build: ./client
     container_name: wo-frontend
     ports:
-      - "3000:80"
+      - "192.168.10.15:3000:3000"
     networks:
       - webnet
     depends_on:
@@ -24,7 +24,8 @@ services:
     build: ./nginx
     container_name: nginx-proxy
     ports:
-      - "443:443"
+      - "192.168.10.15:80:80"
+      - "192.168.10.15:443:443"
     depends_on:
       - backend
       - frontend
