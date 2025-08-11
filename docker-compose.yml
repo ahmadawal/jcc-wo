@@ -13,7 +13,7 @@ services:
     build: ./client
     container_name: wo-frontend
     ports:
-      - "192.168.10.15:3000:3000"
+      - "192.168.10.15:3000:80"
     networks:
       - webnet
     depends_on:
