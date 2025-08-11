@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  webapp:
+    build: .
+    ports:
+      - "192.168.10.15:3000:3000"   # Express
+      - "192.168.10.15:5000:5000"   # Vue
+    volumes:
+      - .:/app
+    restart: unless-stopped
