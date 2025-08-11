@@ -3,9 +3,10 @@ version: '3.8'
 services:
   webapp:
     build: .
+    container_name: wo-webapp
     ports:
-      - "192.168.10.15:3000:3000"   # Express
-      - "192.168.10.15:5000:5000"   # Vue
+      - "192.168.10.15:3000:3000"   # Vue
+      - "192.168.10.15:5000:5000"   # Express
     volumes:
       - .:/app
     restart: unless-stopped
