@@ -1,17 +1,25 @@
-version: '3.8'
-
+version: '3'
 services:
-  webapp:
-    build: .
-    container_name: wo-webapp
+  backend:
+    build: ./server
+    container_name: wo-backend
     ports:
-      - "3000:3000"   # Vue
-      - "5000:5000"   # Express
+      - "192.168.10.15:5000:5000"
     networks:
-      - appnet
+      - webnet
     volumes:
-      - .:/app
-    restart: unless-stopped
-  networks:
-    appnet:
-      driver: bridge
+      - ./server:/app
+  frontend:
+    build: ./client
+    container_name: wo-frontend
+    ports:
+      - "192.168.10.15:3000:3000"
+    networks:
+      - webnet
+    depends_on:
+      - backend
+    volumes:
+      - ./client:/app
+networks:
+  webnet:
+    driver: bridge
