@@ -4,19 +4,19 @@ FROM node:18-alpine as build-stage
 # Set working directory
 WORKDIR /app
 
-# --- Install backend dependencies ---
-COPY server/package*.json ./backend/
+# --- Install server dependencies ---
+COPY server/package*.json ./server/
 RUN cd server && npm install
 
-# --- Install frontend dependencies and build ---
-COPY client/package*.json ./frontend/
-RUN cd frontend && npm install
-COPY client ./frontend
-RUN cd frontend && npm run build
+# --- Install client dependencies and build ---
+COPY client/package*.json ./client/
+RUN cd client && npm install
+COPY client ./client
+RUN cd client && npm run build
 
-# --- Copy backend and frontend code ---
-COPY server ./backend
-COPY client ./frontend
+# --- Copy server and client code ---
+COPY server ./server
+COPY client ./client
 
 # --- Add startup script ---
 COPY start.sh ./start.sh
