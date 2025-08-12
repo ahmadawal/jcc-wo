@@ -1,25 +1,30 @@
-version: '3'
+version: '3.8'
+
 services:
-  backend:
-    build: ./server
-    container_name: wo-backend
-    ports:
-      - "192.168.10.15:5000:5000"
+  client:
+    build:
+      context: ./client
     networks:
-      - webnet
-    volumes:
-      - ./server:/app
-  frontend:
-    build: ./client
-    container_name: wo-frontend
-    ports:
-      - "192.168.10.15:3000:80"
+      - appnet
+
+  server:
+    build:
+      context: ./server
     networks:
-      - webnet
+      - appnet
+
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - appnet
     depends_on:
-      - backend
-    volumes:
-      - ./client:/app
+      - client
+      - server
+    restart: unless-stopped
+
 networks:
-  webnet:
+  appnet:
     driver: bridge
