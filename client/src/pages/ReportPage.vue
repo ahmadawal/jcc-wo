@@ -132,7 +132,7 @@
             >
               Tanggal
               <span v-if="reportSortKey === 'tanggal'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
             <th
@@ -141,7 +141,7 @@
             >
               Waktu
               <span v-if="reportSortKey === 'waktu'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
 
@@ -151,7 +151,7 @@
             >
               Nama Mesin
               <span v-if="reportSortKey === 'nama_mesin'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
             <th
@@ -160,7 +160,7 @@
             >
               Plant
               <span v-if="reportSortKey === 'plant'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
             <th
@@ -169,7 +169,7 @@
             >
               Bagian Rusak
               <span v-if="reportSortKey === 'bagian_rusak'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
             <th
@@ -178,7 +178,7 @@
             >
               Detail
               <span v-if="reportSortKey === 'detail_kerusakan'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
             <th
@@ -187,7 +187,7 @@
             >
               Status
               <span v-if="reportSortKey === 'status'">{{
-                reportSortOrder === "asc" ? "▲" : "▼"
+                reportSortOrder === 'asc' ? '▲' : '▼'
               }}</span>
             </th>
             <th class="p-2 border">Aksi</th>
@@ -203,7 +203,7 @@
             <td class="p-2 border">{{ report.detail_kerusakan }}</td>
             <td class="p-2 border">
               <span :class="statusClass(report.status)">
-                {{ report.status || "New" }}
+                {{ report.status || 'New' }}
               </span>
             </td>
             <td class="p-2 border relative group">
@@ -321,40 +321,39 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed } from "vue";
-import axios from "axios";
-import ConfirmModal from "../components/ConfirmModal.vue";
+import { ref, reactive, onMounted, computed } from 'vue'
+import axios from 'axios'
+import ConfirmModal from '../components/ConfirmModal.vue'
 
 export default {
-  name: "ReportPage",
+  name: 'ReportPage',
   components: { ConfirmModal },
   setup() {
-    const machines = ref([]);
+    const machines = ref([])
     const form = reactive({
-      id: null,
-      tanggal: "",
-      waktu: "",
-      shift: "",
-      nama_pelapor: "",
-      nama_mesin: "",
-      plant: "",
-      jenis_perbaikan: "",
-      bagian_rusak: "",
-      detail_kerusakan: "",
+      // id: null,
+      tanggal: '',
+      waktu: '',
+      nama_pelapor: '',
+      nama_mesin: '',
+      plant: '',
+      jenis_perbaikan: '',
+      bagian_rusak: '',
+      detail_kerusakan: '',
       // status removed from form
-    });
-    const reports = ref([]);
+    })
+    const reports = ref([])
     // Search and sort state for reports
-    const reportSearch = ref("");
-    const reportSortKey = ref("tanggal");
-    const reportSortOrder = ref("desc");
+    const reportSearch = ref('')
+    const reportSortKey = ref('tanggal')
+    const reportSortOrder = ref('desc')
     // Pagination state
-    const reportPage = ref(1);
-    const reportPageSize = ref(10);
+    const reportPage = ref(1)
+    const reportPageSize = ref(10)
     // Filtered reports by search
     const filteredReports = computed(() => {
-      if (!reportSearch.value) return reports.value;
-      const term = reportSearch.value.toLowerCase();
+      if (!reportSearch.value) return reports.value
+      const term = reportSearch.value.toLowerCase()
       return reports.value.filter(
         (r) =>
           (r.nama_mesin && r.nama_mesin.toLowerCase().includes(term)) ||
@@ -364,176 +363,179 @@ export default {
             r.detail_kerusakan.toLowerCase().includes(term)) ||
           (r.nama_pelapor && r.nama_pelapor.toLowerCase().includes(term)) ||
           (r.status && r.status.toLowerCase().includes(term))
-      );
-    });
+      )
+    })
     // Sorted reports
     const sortedReports = computed(() => {
       if (!filteredReports.value.length || !reportSortKey.value)
-        return filteredReports.value;
+        return filteredReports.value
       return [...filteredReports.value].sort((a, b) => {
-        let valA = a[reportSortKey.value];
-        let valB = b[reportSortKey.value];
-        if (valA == null) valA = "";
-        if (valB == null) valB = "";
-        if (reportSortKey.value.includes("tanggal")) {
-          valA = new Date(valA);
-          valB = new Date(valB);
+        let valA = a[reportSortKey.value]
+        let valB = b[reportSortKey.value]
+        if (valA == null) valA = ''
+        if (valB == null) valB = ''
+        if (reportSortKey.value.includes('tanggal')) {
+          valA = new Date(valA)
+          valB = new Date(valB)
         }
-        if (valA < valB) return reportSortOrder.value === "asc" ? -1 : 1;
-        if (valA > valB) return reportSortOrder.value === "asc" ? 1 : -1;
-        return 0;
-      });
-    });
+        if (valA < valB) return reportSortOrder.value === 'asc' ? -1 : 1
+        if (valA > valB) return reportSortOrder.value === 'asc' ? 1 : -1
+        return 0
+      })
+    })
     // Paginated reports (use sortedReports)
     const paginatedReports = computed(() => {
-      const start = (reportPage.value - 1) * reportPageSize.value;
-      return sortedReports.value.slice(start, start + reportPageSize.value);
-    });
+      const start = (reportPage.value - 1) * reportPageSize.value
+      return sortedReports.value.slice(start, start + reportPageSize.value)
+    })
     const reportTotalPages = computed(() =>
       Math.ceil(sortedReports.value.length / reportPageSize.value)
-    );
+    )
     const setReportSort = (key) => {
       if (reportSortKey.value === key) {
-        reportSortOrder.value =
-          reportSortOrder.value === "asc" ? "desc" : "asc";
+        reportSortOrder.value = reportSortOrder.value === 'asc' ? 'desc' : 'asc'
       } else {
-        reportSortKey.value = key;
-        reportSortOrder.value = "asc";
+        reportSortKey.value = key
+        reportSortOrder.value = 'asc'
       }
-    };
+    }
     const goToReportPage = (page) => {
-      if (page >= 1 && page <= reportTotalPages.value) reportPage.value = page;
-    };
-    const previewUrl = ref("");
+      if (page >= 1 && page <= reportTotalPages.value) reportPage.value = page
+    }
+    const previewUrl = ref('')
     // Remove fileInput and openCamera
 
     const fetchReports = async () => {
-      const { data } = await axios.get("/api/reports");
-      reports.value = data.data;
-    };
+      const { data } = await axios.get('http://localhost:5000/api/reports')
+      reports.value = data.data
+    }
 
     // Remove handleFileChange
 
     const resetForm = () => {
       Object.assign(form, {
         id: null,
-        tanggal: "",
-        waktu: "",
-        shift: "",
-        nama_pelapor: "",
-        nama_mesin: "",
-        plant: "",
-        jenis_perbaikan: "",
-        bagian_rusak: "",
-        detail_kerusakan: "",
+        tanggal: '',
+        waktu: '',
+        nama_pelapor: '',
+        nama_mesin: '',
+        plant: '',
+        jenis_perbaikan: '',
+        bagian_rusak: '',
+        detail_kerusakan: '',
         // status removed
-      });
-      previewUrl.value = "";
-    };
+      })
+      previewUrl.value = ''
+    }
 
     const handleSubmit = async () => {
       try {
-        const cleanForm = { ...form };
+        const cleanForm = { ...form }
         // Ensure 'tanggal' is formatted as YYYY-MM-DD or null
         if (cleanForm.tanggal) {
           if (!/^\d{4}-\d{2}-\d{2}$/.test(cleanForm.tanggal)) {
-            const d = new Date(cleanForm.tanggal);
+            const d = new Date(cleanForm.tanggal)
             if (!isNaN(d)) {
-              cleanForm.tanggal = d.toISOString().slice(0, 10);
+              cleanForm.tanggal = d.toISOString().slice(0, 10)
             } else {
-              cleanForm.tanggal = null;
+              cleanForm.tanggal = null
             }
           }
         } else {
-          cleanForm.tanggal = null;
+          cleanForm.tanggal = null
         }
         // Ensure 'waktu' is formatted as HH:MM:SS or null
         if (cleanForm.waktu && /^\d{2}:\d{2}$/.test(cleanForm.waktu)) {
-          cleanForm.waktu = cleanForm.waktu + ":00";
+          cleanForm.waktu = cleanForm.waktu + ':00'
         }
-        if (!cleanForm.waktu) cleanForm.waktu = null;
+        if (!cleanForm.waktu) cleanForm.waktu = null
         // Set all undefined fields to null
         Object.keys(cleanForm).forEach((key) => {
-          if (typeof cleanForm[key] === "undefined") cleanForm[key] = null;
-        });
+          if (typeof cleanForm[key] === 'undefined') cleanForm[key] = null
+        })
         if (form.id) {
-          await axios.put(`/api/reports/${form.id}`, cleanForm);
-          window.$toast.success("Berhasil!", "Laporan berhasil diperbarui");
+          await axios.put(
+            `http://localhost:5000/api/reports/${form.id}`,
+            cleanForm
+          )
+          window.$toast.success('Berhasil!', 'Laporan berhasil diperbarui')
         } else {
-          await axios.post("/api/reports", cleanForm);
+          await axios.post('http://localhost:5000/api/reports', cleanForm)
           window.$toast.success(
-            "Berhasil!",
-            "Laporan kerusakan berhasil dikirim"
-          );
+            'Berhasil!',
+            'Laporan kerusakan berhasil dikirim'
+          )
         }
-        await fetchReports();
-        resetForm();
+        await fetchReports()
+        resetForm()
       } catch (error) {
         window.$toast.error(
-          "Gagal!",
-          "Gagal menyimpan laporan. Pastikan semua data sudah benar."
-        );
-        console.error(error);
+          'Gagal!',
+          'Gagal menyimpan laporan. Pastikan semua data sudah benar.'
+        )
+        console.error(error)
       }
-    };
+    }
 
     const editReport = (report) => {
-      Object.assign(form, report);
-      previewUrl.value = report.foto_url || "";
-    };
+      Object.assign(form, report)
+      previewUrl.value = report.foto_url || ''
+    }
 
-    const showConfirm = ref(false);
-    const reportIdToDelete = ref(null);
+    const showConfirm = ref(false)
+    const reportIdToDelete = ref(null)
 
     const deleteReport = (id) => {
-      showConfirm.value = true;
-      reportIdToDelete.value = id;
-    };
+      showConfirm.value = true
+      reportIdToDelete.value = id
+    }
     const confirmDelete = async () => {
-      showConfirm.value = false;
+      showConfirm.value = false
       try {
-        await axios.delete(`/api/reports/${reportIdToDelete.value}`);
-        await fetchReports();
-        window.$toast.success("Berhasil!", "Laporan berhasil dihapus");
+        await axios.delete(
+          `http://localhost:5000/api/reports/${reportIdToDelete.value}`
+        )
+        await fetchReports()
+        window.$toast.success('Berhasil!', 'Laporan berhasil dihapus')
       } catch (error) {
-        window.$toast.error("Gagal!", "Gagal menghapus laporan");
-        console.error(error);
+        window.$toast.error('Gagal!', 'Gagal menghapus laporan')
+        console.error(error)
       }
-    };
+    }
 
     const fetchMachines = async () => {
       try {
-        const { data } = await axios.get("/api/machines");
-        machines.value = data.data;
+        const { data } = await axios.get('http://localhost:5000/api/machines')
+        machines.value = data.data
       } catch (error) {
-        console.error("Failed to fetch machines:", error);
+        console.error('Failed to fetch machines:', error)
       }
-    };
+    }
 
     onMounted(() => {
-      fetchReports();
-      fetchMachines();
-    });
+      fetchReports()
+      fetchMachines()
+    })
 
     const formatDateUTC = (dateStr) => {
-      if (!dateStr) return "";
-      const date = new Date(dateStr);
-      return date.toISOString().slice(0, 10);
-    };
+      if (!dateStr) return ''
+      const date = new Date(dateStr)
+      return date.toISOString().slice(0, 10)
+    }
 
     const statusClass = (status) => {
-      if (status === "Selesai")
-        return "bg-green-200 text-green-800 font-semibold px-2 py-1 rounded";
-      if (status === "Proses")
-        return "bg-yellow-200 text-yellow-800 font-semibold px-2 py-1 rounded";
-      if (status === "Pending")
-        return "bg-orange-200 text-orange-800 font-semibold px-2 py-1 rounded";
-      if (status === "New")
-        return "bg-blue-200 text-blue-800 font-semibold px-2 py-1 rounded";
-      return "bg-gray-200 text-gray-800 font-semibold px-2 py-1 rounded";
-    };
+      if (status === 'Selesai')
+        return 'bg-green-200 text-green-800 font-semibold px-2 py-1 rounded'
+      if (status === 'Proses')
+        return 'bg-yellow-200 text-yellow-800 font-semibold px-2 py-1 rounded'
+      if (status === 'Pending')
+        return 'bg-orange-200 text-orange-800 font-semibold px-2 py-1 rounded'
+      if (status === 'New')
+        return 'bg-blue-200 text-blue-800 font-semibold px-2 py-1 rounded'
+      return 'bg-gray-200 text-gray-800 font-semibold px-2 py-1 rounded'
+    }
 
-    const hoveredAction = ref(null);
+    const hoveredAction = ref(null)
 
     return {
       form,
@@ -563,9 +565,9 @@ export default {
       goToReportPage,
       filteredReports,
       sortedReports,
-    };
+    }
   },
-};
+}
 </script>
 
 <style scoped>
@@ -579,7 +581,7 @@ export default {
   @apply bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg font-semibold transition-all duration-200;
 }
 .material-icons {
-  font-family: "Material Icons";
+  font-family: 'Material Icons';
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
@@ -588,7 +590,7 @@ export default {
   text-transform: none;
   display: inline-block;
   direction: ltr;
-  -webkit-font-feature-settings: "liga";
+  -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
 </style>

@@ -11,6 +11,7 @@
     "start:client": "cd client && npm run build && npm run preview",
     "start:server": "cd server && npm start",
     "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "setup:db": "cd server && node setup-database.js",
     "setup": "npm run install:all && npm run setup:db"
   },
   "keywords": [
