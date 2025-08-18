@@ -10,6 +10,8 @@ services:
     environment:
       - VITE_APP_PORT=3000
       - VITE_API_BASE_URL=http://wo-mt.jembo.com:5000
+    ports:
+      - "3000:80"
 
   server:
     container_name: wo_backend
@@ -25,14 +27,14 @@ services:
       - DB_NAME=wo_app
       - DB_PORT=3306
     ports:
-      - "5000:5000"
+      - "192.168.10.15:5000:5000"
 
   nginx:
     container_name: wo_nginx
     build:
       context: ./nginx
     ports:
-      - "80:80"
+      - "192.168.10.15:80:80"
     networks:
       - appnet
     depends_on:
