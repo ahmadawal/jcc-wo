@@ -27,7 +27,7 @@
       </span>
     </div>
     <form @submit.prevent="handleSubmit">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
           <label class="block text-sm font-medium mb-1"
             >Tanggal Laporan *</label
@@ -38,6 +38,18 @@
           <label class="block text-sm font-medium mb-1">Waktu Laporan</label>
           <input type="time" v-model="form.waktu" class="input" required />
         </div>
+
+        <div>
+          <label class="block text-sm font-medium mb-1">Shift Pelapor *</label>
+          <input
+            type="text"
+            v-model="form.shift"
+            class="input"
+            readonly
+            placeholder="Shift"
+          />
+        </div>
+
         <div>
           <label class="block text-sm font-medium mb-1">Nama Pelapor *</label>
           <input
@@ -52,19 +64,28 @@
           <label class="block text-sm font-medium mb-1">Plant *</label>
           <select v-model="form.plant" class="input" required>
             <option value="">Pilih Plant</option>
-            <option value="APL">APL</option>
-            <option value="BPL">BPL</option>
-            <option value="CPL">CPL</option>
-            <option value="DPL">DPL</option>
-            <option value="EPL">EPL</option>
-            <option value="QC">QC</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="QA">QA</option>
             <option value="SS">SS</option>
             <option value="SC">SC</option>
+            <option value="GA">GA</option>
           </select>
         </div>
+
         <div>
           <label class="block text-sm font-medium mb-1">Mesin</label>
-          <select v-model="form.nama_mesin" class="input">
+          <input
+            v-if="['QA', 'SS', 'GA', 'SC'].includes(form.plant)"
+            v-model="form.nama_mesin"
+            type="text"
+            placeholder="Masukkan nama mesin"
+            class="input"
+          />
+          <select v-else v-model="form.nama_mesin" class="input">
             <option value="">Pilih Mesin</option>
             <option
               v-for="machine in machines"
@@ -321,7 +342,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed, watch } from 'vue'
 import axios from 'axios'
 import ConfirmModal from '../components/ConfirmModal.vue'
 
@@ -334,6 +355,7 @@ export default {
       // id: null,
       tanggal: '',
       waktu: '',
+      shift: '',
       nama_pelapor: '',
       nama_mesin: '',
       plant: '',
@@ -417,6 +439,7 @@ export default {
         id: null,
         tanggal: '',
         waktu: '',
+        shift: '',
         nama_pelapor: '',
         nama_mesin: '',
         plant: '',
@@ -444,15 +467,18 @@ export default {
         } else {
           cleanForm.tanggal = null
         }
+
         // Ensure 'waktu' is formatted as HH:MM:SS or null
         if (cleanForm.waktu && /^\d{2}:\d{2}$/.test(cleanForm.waktu)) {
           cleanForm.waktu = cleanForm.waktu + ':00'
         }
+
         if (!cleanForm.waktu) cleanForm.waktu = null
         // Set all undefined fields to null
         Object.keys(cleanForm).forEach((key) => {
           if (typeof cleanForm[key] === 'undefined') cleanForm[key] = null
         })
+
         if (form.id) {
           await axios.put(`/api/reports/${form.id}`, cleanForm)
           window.$toast.success('Berhasil!', 'Laporan berhasil diperbarui')
@@ -507,9 +533,75 @@ export default {
       }
     }
 
+    watch(
+      () => form.plant,
+      async (newPlant) => {
+        if (!newPlant) return
+
+        // Skip execution for QA, SS, and GA
+        if (['QA', 'SS', 'GA', 'SC'].includes(newPlant)) return
+
+        try {
+          const { data } = await axios.get(`/api/machines/plant/${newPlant}`)
+          machines.value = data.data
+        } catch (error) {
+          console.error('Failed to fetch machines:', error)
+          form.plant = ''
+        }
+      }
+    )
+
+    // Function to convert time string to minutes for easier comparison
+    const timeToMinutes = (timeStr) => {
+      if (!timeStr) return 0
+
+      const [time, period] = timeStr.split(' ')
+      const [hours, minutes] = time.split(':').map(Number)
+
+      let totalMinutes = hours * 60 + minutes
+
+      if (period === 'PM' && hours !== 12) {
+        totalMinutes += 12 * 60
+      } else if (period === 'AM' && hours === 12) {
+        totalMinutes = minutes
+      }
+
+      return totalMinutes
+    }
+
+    // Function to determine shift based on time
+    const determineShift = (timeStr) => {
+      if (!timeStr) return ''
+
+      const minutes = timeToMinutes(timeStr)
+
+      // Shift 1: 07:15 AM - 2:45 PM (435 - 855 minutes)
+      // Shift 2: 2:46 PM - 10:45 PM (856 - 1425 minutes)
+      // Shift 3: 10:46 PM - 07:14 AM (1426+ minutes or 0-434 minutes)
+
+      if (minutes >= 435 && minutes <= 855) {
+        // 07:15 AM - 2:45 PM
+        return '1'
+      } else if (minutes >= 856 && minutes <= 1425) {
+        // 2:46 PM - 10:45 PM
+        return '2'
+      } else {
+        // 10:46 PM - 07:14 AM
+        return '3'
+      }
+    }
+
+    // Watch for changes in form.waktu and automatically set shift
+    watch(
+      () => form.waktu,
+      (newTime) => {
+        form.shift = determineShift(newTime)
+      }
+    )
+
     onMounted(() => {
       fetchReports()
-      fetchMachines()
+      // fetchMachines()
     })
 
     const formatDateUTC = (dateStr) => {

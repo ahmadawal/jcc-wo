@@ -30,7 +30,7 @@ app.use('/api/', limiter)
 
 // CORS configuration - Allow LAN access
 
-const allowedOrigins = ['http://wo-mt.jembo.com:3000']
+const allowedOrigins = ['http://wo-mt.jembo.com', 'http://wo-mt.jembo.com:3000']
 
 app.use(
   cors({

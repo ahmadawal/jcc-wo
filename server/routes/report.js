@@ -36,6 +36,7 @@ router.post('/', async (req, res) => {
     const {
       tanggal,
       waktu,
+      shift,
       nama_pelapor,
       nama_mesin,
       plant,
@@ -52,11 +53,12 @@ router.post('/', async (req, res) => {
     }
     const [result] = await pool.execute(
       `INSERT INTO machine_reports (
-        tanggal, waktu, nama_pelapor, nama_mesin, plant, jenis_perbaikan, bagian_rusak, detail_kerusakan, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        tanggal, waktu, shift, nama_pelapor, nama_mesin, plant, jenis_perbaikan, bagian_rusak, detail_kerusakan, status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         tanggal,
         waktu,
+        shift,
         nama_pelapor,
         nama_mesin,
         plant,
@@ -78,6 +80,7 @@ router.put('/:id', async (req, res) => {
     const {
       tanggal,
       waktu,
+      shift,
       nama_pelapor,
       nama_mesin,
       plant,
@@ -94,11 +97,12 @@ router.put('/:id', async (req, res) => {
     }
     await pool.execute(
       `UPDATE machine_reports SET
-        tanggal=?, waktu=?, nama_pelapor=?, nama_mesin=?, plant=?, jenis_perbaikan=?, bagian_rusak=?, detail_kerusakan=?, status=?
+        tanggal=?, waktu=?, shift=?, nama_pelapor=?, nama_mesin=?, plant=?, jenis_perbaikan=?, bagian_rusak=?, detail_kerusakan=?, status=?
       WHERE id=?`,
       [
         tanggal,
         waktu,
+        shift,
         nama_pelapor,
         nama_mesin,
         plant,
