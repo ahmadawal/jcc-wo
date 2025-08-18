@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const dotenv = require("dotenv").config;
 const { testConnection } = require("./config/database");
 const apiRoutes = require("./routes/api");
 const reportRoutes = require("./routes/report");
@@ -17,6 +18,8 @@ const PORT = process.env.PORT || 5000;
 
 // Security middleware
 app.use(helmet());
+
+app.use(dotenv);
 
 // Rate limiting
 const limiter = rateLimit({
