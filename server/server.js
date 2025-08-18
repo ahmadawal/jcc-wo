@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
-const dotenv = require('dotenv').config
 const { testConnection } = require('./config/database')
 const apiRoutes = require('./routes/api')
 const reportRoutes = require('./routes/report')
