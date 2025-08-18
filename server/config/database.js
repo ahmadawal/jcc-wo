@@ -1,7 +1,7 @@
 const mysql = require('mysql2/promise')
 
 const dbConfig = {
-  host: '127.0.0.1',
+  host: '192.168.10.15',
   user: 'devadmin',
   password: 'devadmin',
   database: 'wo_app',
