@@ -406,9 +406,7 @@ export default {
     // Remove fileInput and openCamera
 
     const fetchReports = async () => {
-      const { data } = await axios.get(
-        'http://wo-mt.jembo.com:5000/api/reports'
-      )
+      const { data } = await axios.get('/api/reports')
       reports.value = data.data
     }
 
@@ -456,13 +454,10 @@ export default {
           if (typeof cleanForm[key] === 'undefined') cleanForm[key] = null
         })
         if (form.id) {
-          await axios.put(
-            `http://wo-mt.jembo.com:5000/api/reports/${form.id}`,
-            cleanForm
-          )
+          await axios.put(`/api/reports/${form.id}`, cleanForm)
           window.$toast.success('Berhasil!', 'Laporan berhasil diperbarui')
         } else {
-          await axios.post('http://wo-mt.jembo.com:5000/api/reports', cleanForm)
+          await axios.post('/api/reports', cleanForm)
           window.$toast.success(
             'Berhasil!',
             'Laporan kerusakan berhasil dikirim'
@@ -494,9 +489,7 @@ export default {
     const confirmDelete = async () => {
       showConfirm.value = false
       try {
-        await axios.delete(
-          `http://wo-mt.jembo.com:5000/api/reports/${reportIdToDelete.value}`
-        )
+        await axios.delete(`/api/reports/${reportIdToDelete.value}`)
         await fetchReports()
         window.$toast.success('Berhasil!', 'Laporan berhasil dihapus')
       } catch (error) {
@@ -507,9 +500,7 @@ export default {
 
     const fetchMachines = async () => {
       try {
-        const { data } = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/machines'
-        )
+        const { data } = await axios.get('/api/machines')
         machines.value = data.data
       } catch (error) {
         console.error('Failed to fetch machines:', error)

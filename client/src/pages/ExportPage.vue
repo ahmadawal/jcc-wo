@@ -109,7 +109,7 @@ export default {
   methods: {
     async downloadExcel() {
       try {
-        let url = 'http://wo-mt.jembo.com:5000/api/export/excel'
+        let url = '/api/export/excel'
         const params = []
         if (this.selectedMonth) params.push(`month=${this.selectedMonth}`)
         if (this.selectedYear) params.push(`year=${this.selectedYear}`)

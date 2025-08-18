@@ -312,38 +312,26 @@ export default {
         systemStatus.value = 'Loading data...'
 
         // Fetch reports
-        const reportsResponse = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/reports'
-        )
+        const reportsResponse = await axios.get('/api/reports')
         const reports = reportsResponse.data.data || []
 
         // Fetch all repairs
-        const repairsResponse = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/repairs'
-        )
+        const repairsResponse = await axios.get('/api/repairs')
         const allRepairs = repairsResponse.data.data || []
 
-        const totalMechnical = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/mechanical'
-        )
+        const totalMechnical = await axios.get('/api/mechanical')
 
         const mechanical = totalMechnical.data.data || []
 
-        const totalElectric = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/electrical'
-        )
+        const totalElectric = await axios.get('/api/electrical')
 
         const electrical = totalElectric.data.data || []
 
-        const totalUtility = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/utility'
-        )
+        const totalUtility = await axios.get('/api/utility')
 
         const utility = totalUtility.data.data || []
 
-        const totalCalibration = await axios.get(
-          'http://wo-mt.jembo.com:5000/api/calibration'
-        )
+        const totalCalibration = await axios.get('/api/calibration')
 
         const calibration = totalCalibration.data.data || []
 
