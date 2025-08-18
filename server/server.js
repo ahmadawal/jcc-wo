@@ -32,7 +32,7 @@ app.use('/api/', limiter)
 app.use(
   cors({
     origin: [
-      'http://wo-mt.jembo.com:5000',
+      'http://wo-mt.jembo.com:3000',
       'http://server:5000',
       'http://localhost:5000',
       'http://127.0.0.1:5000',
