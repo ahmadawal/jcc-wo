@@ -8,7 +8,7 @@ export default defineConfig({
     host: '0.0.0.0', // Enable LAN access
     proxy: {
       '/api': {
-        target: 'http://wo-backend.jembo.com:5000',
+        target: 'http://wo-backend.jembo.com:5000/api',
         changeOrigin: true,
         secure: false,
         credentials: true,
