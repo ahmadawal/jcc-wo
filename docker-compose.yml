@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   client:
+    container_name: wo_frontend
     build:
       context: ./client
     networks:
@@ -9,8 +10,11 @@ services:
     environment:
       - VITE_APP_PORT=3000
       - VITE_API_BASE_URL=http://wo-mt.jembo.com:5000
+    ports:
+      - "3000:80"
 
   server:
+    container_name: wo_backend
     build:
       context: ./server
     networks:
@@ -22,6 +26,8 @@ services:
       - DB_PASSWORD=devadmin
       - DB_NAME=wo_app
       - DB_PORT=3306
+    ports:
+      - "5000:5000"
 
   nginx:
     build:
