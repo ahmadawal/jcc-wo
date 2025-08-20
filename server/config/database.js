@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise')
 const dbConfig = {
-  host: 'wo-mt.jembo.com',
+  host: 'mysql_server', // Use the service name defined in docker-compose
   user: 'devadmin',
   password: 'devadmin',
   database: 'wo_app',
