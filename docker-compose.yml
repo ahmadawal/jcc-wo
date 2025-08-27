@@ -1,7 +1,7 @@
 services:
   frontend:
     build: ./client
-    container_name: frontend
+    container_name: wo_frontend
     ports:
       - "80:80"
     depends_on:
@@ -10,7 +10,7 @@ services:
 
   backend:
     build: ./server
-    container_name: backend
+    container_name: wo_backend
     ports:
       - "5000:5000"
     environment:
