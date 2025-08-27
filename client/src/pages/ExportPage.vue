@@ -82,54 +82,54 @@
 </template>
 
 <script>
-const now = new Date()
+const now = new Date();
 export default {
-  name: 'ExportPage',
+  name: "ExportPage",
   data() {
     return {
       selectedMonth: String(now.getMonth() + 1),
       selectedYear: String(now.getFullYear()),
       months: [
-        'Januari',
-        'Februari',
-        'Maret',
-        'April',
-        'Mei',
-        'Juni',
-        'Juli',
-        'Agustus',
-        'September',
-        'Oktober',
-        'November',
-        'Desember',
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember",
       ],
       years: Array.from({ length: 6 }, (_, i) => String(now.getFullYear() - i)),
-    }
+    };
   },
   methods: {
     async downloadExcel() {
       try {
-        let url = '/api/export/excel'
-        const params = []
-        if (this.selectedMonth) params.push(`month=${this.selectedMonth}`)
-        if (this.selectedYear) params.push(`year=${this.selectedYear}`)
-        if (params.length) url += '?' + params.join('&')
-        const response = await fetch(url, { method: 'GET' })
-        if (!response.ok) throw new Error('Gagal mengunduh file')
-        const blob = await response.blob()
-        const urlObj = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = urlObj
-        a.download = 'wo_export.xlsx'
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-        window.URL.revokeObjectURL(urlObj)
-        window.$toast?.success('Berhasil!', 'File Excel berhasil diunduh')
+        let url = "http://wo-backend:5000/api/export/excel";
+        const params = [];
+        if (this.selectedMonth) params.push(`month=${this.selectedMonth}`);
+        if (this.selectedYear) params.push(`year=${this.selectedYear}`);
+        if (params.length) url += "?" + params.join("&");
+        const response = await fetch(url, { method: "GET" });
+        if (!response.ok) throw new Error("Gagal mengunduh file");
+        const blob = await response.blob();
+        const urlObj = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = urlObj;
+        a.download = "wo_export.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(urlObj);
+        window.$toast?.success("Berhasil!", "File Excel berhasil diunduh");
       } catch (error) {
-        window.$toast?.error('Gagal!', 'Gagal mengunduh file Excel')
+        window.$toast?.error("Gagal!", "Gagal mengunduh file Excel");
       }
     },
   },
-}
+};
 </script>

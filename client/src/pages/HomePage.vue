@@ -251,14 +251,14 @@
   </div>
 </template>
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted, onUnmounted } from "vue";
+import axios from "axios";
 
 export default {
-  name: 'HomePage',
+  name: "HomePage",
   setup() {
-    const particles = ref([])
-    const shapes = ref([])
+    const particles = ref([]);
+    const shapes = ref([]);
     const stats = ref({
       totalReports: 0,
       newReports: 0,
@@ -277,12 +277,12 @@ export default {
       totalElectric: 0,
       totalUtility: 0,
       totalCalibration: 0,
-    })
-    const systemStatus = ref('Loading...')
-    const lastUpdated = ref('')
-    const interactionCount = ref(0)
-    const animationActive = ref(true)
-    const notification = ref({ show: false, message: '' })
+    });
+    const systemStatus = ref("Loading...");
+    const lastUpdated = ref("");
+    const interactionCount = ref(0);
+    const animationActive = ref(true);
+    const notification = ref({ show: false, message: "" });
     const generateParticles = () => {
       particles.value = Array.from({ length: 20 }, (_, i) => ({
         style: {
@@ -291,8 +291,8 @@ export default {
           animationDelay: `${Math.random() * 6}s`,
         },
         hover: false,
-      }))
-    }
+      }));
+    };
     const generateShapes = () => {
       shapes.value = Array.from({ length: 8 }, (_, i) => ({
         style: {
@@ -302,82 +302,94 @@ export default {
         },
         class:
           i % 2 === 0
-            ? 'w-16 h-16 bg-gradient-to-r from-pink-500/30 to-purple-500/30 rounded-full animate-spin-slow'
-            : 'w-12 h-12 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 transform rotate-45 animate-wiggle',
-      }))
-    }
+            ? "w-16 h-16 bg-gradient-to-r from-pink-500/30 to-purple-500/30 rounded-full animate-spin-slow"
+            : "w-12 h-12 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 transform rotate-45 animate-wiggle",
+      }));
+    };
 
     const fetchDashboardData = async () => {
       try {
-        systemStatus.value = 'Loading data...'
+        systemStatus.value = "Loading data...";
 
         // Fetch reports
-        const reportsResponse = await axios.get('/api/reports')
-        const reports = reportsResponse.data.data || []
+        const reportsResponse = await axios.get(
+          "http://wo-backend:5000/api/reports"
+        );
+        const reports = reportsResponse.data.data || [];
 
         // Fetch all repairs
-        const repairsResponse = await axios.get('/api/repairs')
-        const allRepairs = repairsResponse.data.data || []
+        const repairsResponse = await axios.get(
+          "http://wo-backend:5000/api/repairs"
+        );
+        const allRepairs = repairsResponse.data.data || [];
 
-        const totalMechnical = await axios.get('/api/mechanical')
+        const totalMechnical = await axios.get(
+          "http://wo-backend:5000/api/mechanical"
+        );
 
-        const mechanical = totalMechnical.data.data || []
+        const mechanical = totalMechnical.data.data || [];
 
-        const totalElectric = await axios.get('/api/electrical')
+        const totalElectric = await axios.get(
+          "http://wo-backend:5000/api/electrical"
+        );
 
-        const electrical = totalElectric.data.data || []
+        const electrical = totalElectric.data.data || [];
 
-        const totalUtility = await axios.get('/api/utility')
+        const totalUtility = await axios.get(
+          "http://wo-backend:5000/api/utility"
+        );
 
-        const utility = totalUtility.data.data || []
+        const utility = totalUtility.data.data || [];
 
-        const totalCalibration = await axios.get('/api/calibration')
+        const totalCalibration = await axios.get(
+          "http://wo-backend:5000/api/calibration"
+        );
 
-        const calibration = totalCalibration.data.data || []
+        const calibration = totalCalibration.data.data || [];
 
         // Calculate today's date
-        const today = new Date().toISOString().split('T')[0]
+        const today = new Date().toISOString().split("T")[0];
 
         // Calculate statistics
-        const totalReports = reports.length
-        const allMechanical = mechanical.length
-        const allElectrical = electrical.length
-        const allUtility = utility.length
-        const allCalibration = calibration.length
+        const totalReports = reports.length;
+        const allMechanical = mechanical.length;
+        const allElectrical = electrical.length;
+        const allUtility = utility.length;
+        const allCalibration = calibration.length;
 
         const newReports = reports.filter(
-          (r) => r.status === 'New' || !r.status
-        ).length
+          (r) => r.status === "New" || !r.status
+        ).length;
         const inProgressReports = reports.filter(
-          (r) => r.status === 'Proses'
-        ).length
-        const todayReports = reports.filter((r) => r.tanggal === today).length
+          (r) => r.status === "Proses"
+        ).length;
+        const todayReports = reports.filter((r) => r.tanggal === today).length;
 
-        const totalRepairs = allRepairs.length
+        const totalRepairs = allRepairs.length;
         const completedRepairs = allRepairs.filter(
-          (r) => r.status === 'Selesai'
-        ).length
+          (r) => r.status === "Selesai"
+        ).length;
         const pendingRepairs = allRepairs.filter(
-          (r) => r.status === 'Pending'
-        ).length
+          (r) => r.status === "Pending"
+        ).length;
         const todayRepairs = allRepairs.filter(
           (r) => r.tanggal_selesai === today
-        ).length
+        ).length;
 
         const newMechanical = reports.filter(
-          (r) => r.status === 'New' && r.jenis_perbaikan === 'Mekanik'
-        ).length
+          (r) => r.status === "New" && r.jenis_perbaikan === "Mekanik"
+        ).length;
         const newElectrical = reports.filter(
-          (r) => r.status === 'New' && r.jenis_perbaikan === 'Elektrik'
-        ).length
+          (r) => r.status === "New" && r.jenis_perbaikan === "Elektrik"
+        ).length;
         const newUtility = reports.filter(
-          (r) => r.status === 'New' && r.jenis_perbaikan === 'Utility'
-        ).length
+          (r) => r.status === "New" && r.jenis_perbaikan === "Utility"
+        ).length;
         const newCalibration = reports.filter(
-          (r) => r.status === 'New' && r.jenis_perbaikan === 'Kalibrasi'
-        ).length
+          (r) => r.status === "New" && r.jenis_perbaikan === "Kalibrasi"
+        ).length;
 
-        const recentActivity = todayReports + todayRepairs
+        const recentActivity = todayReports + todayRepairs;
 
         // Update stats
         stats.value = {
@@ -398,86 +410,86 @@ export default {
           allMechanical,
           allElectrical,
           allCalibration,
-        }
+        };
 
-        systemStatus.value = 'System Online'
-        lastUpdated.value = new Date().toLocaleTimeString('id-ID')
+        systemStatus.value = "System Online";
+        lastUpdated.value = new Date().toLocaleTimeString("id-ID");
       } catch (error) {
-        console.error('Error fetching dashboard data:', error)
-        systemStatus.value = 'Error loading data'
-        window.$toast?.error('Error', 'Gagal memuat data dashboard')
+        console.error("Error fetching dashboard data:", error);
+        systemStatus.value = "Error loading data";
+        window.$toast?.error("Error", "Gagal memuat data dashboard");
       }
-    }
+    };
     const interactWithParticle = (index) => {
-      interactionCount.value++
-      statusMessage.value = `Particle ${index + 1} clicked!`
-      showNotification(`Particle ${index + 1} interacted!`)
-      const particle = particles.value[index]
-      particle.style.background = 'rgba(255, 255, 0, 0.6)'
+      interactionCount.value++;
+      statusMessage.value = `Particle ${index + 1} clicked!`;
+      showNotification(`Particle ${index + 1} interacted!`);
+      const particle = particles.value[index];
+      particle.style.background = "rgba(255, 255, 0, 0.6)";
       setTimeout(() => {
-        particle.style.background = 'rgba(255, 255, 255, 0.2)'
-      }, 1000)
-    }
+        particle.style.background = "rgba(255, 255, 255, 0.2)";
+      }, 1000);
+    };
     const interactWithShape = (index) => {
-      interactionCount.value++
-      statusMessage.value = `Shape ${index + 1} clicked!`
-      showNotification(`Shape ${index + 1} interacted!`)
-      const shape = shapes.value[index]
-      shape.class += ' animate-bounce'
+      interactionCount.value++;
+      statusMessage.value = `Shape ${index + 1} clicked!`;
+      showNotification(`Shape ${index + 1} interacted!`);
+      const shape = shapes.value[index];
+      shape.class += " animate-bounce";
       setTimeout(() => {
-        shape.class = shape.class.replace(' animate-bounce', '')
-      }, 1000)
-    }
+        shape.class = shape.class.replace(" animate-bounce", "");
+      }, 1000);
+    };
     const refreshDashboard = () => {
-      fetchDashboardData()
-      showNotification('Dashboard diperbarui!')
-    }
+      fetchDashboardData();
+      showNotification("Dashboard diperbarui!");
+    };
     const showMessage = (message) => {
-      interactionCount.value++
-      statusMessage.value = message
-      showNotification(message)
-    }
+      interactionCount.value++;
+      statusMessage.value = message;
+      showNotification(message);
+    };
     const toggleAnimation = () => {
-      animationActive.value = !animationActive.value
+      animationActive.value = !animationActive.value;
       statusMessage.value = animationActive.value
-        ? 'Animations enabled!'
-        : 'Animations disabled!'
-      showNotification(statusMessage.value)
-    }
+        ? "Animations enabled!"
+        : "Animations disabled!";
+      showNotification(statusMessage.value);
+    };
     const showNotification = (message) => {
-      notification.value = { show: true, message }
+      notification.value = { show: true, message };
       setTimeout(() => {
-        notification.value.show = false
-      }, 3000)
-    }
+        notification.value.show = false;
+      }, 3000);
+    };
     const handleMouseMove = (event) => {
-      if (!animationActive.value) return
-      const { clientX, clientY } = event
-      const centerX = window.innerWidth / 2
-      const centerY = window.innerHeight / 2
+      if (!animationActive.value) return;
+      const { clientX, clientY } = event;
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
       particles.value.forEach((particle, index) => {
-        const speed = ((index % 3) + 1) * 0.02
-        const x = (clientX - centerX) * speed
-        const y = (clientY - centerY) * speed
-        particle.style.transform = `translate(${x}px, ${y}px)`
-      })
-    }
+        const speed = ((index % 3) + 1) * 0.02;
+        const x = (clientX - centerX) * speed;
+        const y = (clientY - centerY) * speed;
+        particle.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    };
     onMounted(() => {
-      generateParticles()
-      generateShapes()
-      window.addEventListener('mousemove', handleMouseMove)
-      fetchDashboardData()
+      generateParticles();
+      generateShapes();
+      window.addEventListener("mousemove", handleMouseMove);
+      fetchDashboardData();
 
       // Auto-refresh dashboard every 30 seconds
-      const refreshInterval = setInterval(fetchDashboardData, 30000)
+      const refreshInterval = setInterval(fetchDashboardData, 30000);
 
       onUnmounted(() => {
-        clearInterval(refreshInterval)
-      })
-    })
+        clearInterval(refreshInterval);
+      });
+    });
     onUnmounted(() => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    })
+      window.removeEventListener("mousemove", handleMouseMove);
+    });
     return {
       particles,
       shapes,
@@ -492,9 +504,9 @@ export default {
       refreshDashboard,
       showMessage,
       toggleAnimation,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>

@@ -48,7 +48,7 @@
             >
               Tanggal
               <span v-if="reportSortKey === 'tanggal'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -57,7 +57,7 @@
             >
               Waktu
               <span v-if="reportSortKey === 'waktu'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -66,7 +66,7 @@
             >
               Mesin
               <span v-if="reportSortKey === 'nama_mesin'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -75,7 +75,7 @@
             >
               Plant
               <span v-if="reportSortKey === 'plant'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -84,7 +84,7 @@
             >
               Bagian Rusak
               <span v-if="reportSortKey === 'bagian_rusak'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -93,7 +93,7 @@
             >
               Detail Kerusakan
               <span v-if="reportSortKey === 'detail_kerusakan'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -102,7 +102,7 @@
             >
               Status
               <span v-if="reportSortKey === 'status'">{{
-                reportSortOrder === 'asc' ? '▲' : '▼'
+                reportSortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th class="p-2 border">Aksi</th>
@@ -118,7 +118,7 @@
             <td class="p-2 border">{{ report.detail_kerusakan }}</td>
             <td class="p-2 border">
               <span :class="statusClass(report.status)">
-                {{ report.status || '-' }}
+                {{ report.status || "-" }}
               </span>
             </td>
             <td class="p-2 border">
@@ -187,7 +187,7 @@
             >
               Teknisi
               <span v-if="sortKey === 'nama_teknisi'">{{
-                sortOrder === 'asc' ? '▲' : '▼'
+                sortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -196,7 +196,7 @@
             >
               Detail Perbaikan
               <span v-if="sortKey === 'detail_perbaikan'">{{
-                sortOrder === 'asc' ? '▲' : '▼'
+                sortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th
@@ -205,13 +205,13 @@
             >
               Tanggal Selesai
               <span v-if="sortKey === 'tanggal_selesai'">{{
-                sortOrder === 'asc' ? '▲' : '▼'
+                sortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th class="p-2 border cursor-pointer" @click="setSort('status')">
               Status
               <span v-if="sortKey === 'status'">{{
-                sortOrder === 'asc' ? '▲' : '▼'
+                sortOrder === "asc" ? "▲" : "▼"
               }}</span>
             </th>
             <th class="p-2 border">Aksi</th>
@@ -226,7 +226,7 @@
             </td>
             <td class="p-2 border">
               <span :class="statusClass(repair.status)">{{
-                repair.status || '-'
+                repair.status || "-"
               }}</span>
             </td>
             <td class="p-2 border relative group">
@@ -437,7 +437,7 @@
             Batal
           </button>
           <button type="submit" class="btn-primary">
-            {{ form.id ? 'Update' : 'Tambah' }} Perbaikan
+            {{ form.id ? "Update" : "Tambah" }} Perbaikan
           </button>
         </div>
       </form>
@@ -446,51 +446,51 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, computed } from 'vue'
-import axios from 'axios'
+import { ref, reactive, onMounted, computed } from "vue";
+import axios from "axios";
 
 export default {
-  name: 'RepairPage',
+  name: "RepairPage",
   setup() {
-    const teknisiList = ref([])
+    const teknisiList = ref([]);
     const spareParts = [
-      'Bearing',
-      'Hydraulic Pump',
-      'Seal',
-      'Belt',
-      'Motor',
-      'Lainnya',
-    ]
-    const reports = ref([])
-    const repairs = ref([])
-    const selectedReportId = ref(null)
+      "Bearing",
+      "Hydraulic Pump",
+      "Seal",
+      "Belt",
+      "Motor",
+      "Lainnya",
+    ];
+    const reports = ref([]);
+    const repairs = ref([]);
+    const selectedReportId = ref(null);
     const form = reactive({
       id: null,
-      detail_perbaikan: '',
-      waktu_perbaikan_mulai: '',
-      waktu_perbaikan_selesai: '',
-      tanggal_selesai: '',
-      spare_part: '',
+      detail_perbaikan: "",
+      waktu_perbaikan_mulai: "",
+      waktu_perbaikan_selesai: "",
+      tanggal_selesai: "",
+      spare_part: "",
       nama_teknisi: [],
-      status: '',
-      keterangan_tambahan: '',
-    })
-    const hoveredAction = ref(null)
+      status: "",
+      keterangan_tambahan: "",
+    });
+    const hoveredAction = ref(null);
 
     // Pagination & Sorting state
-    const currentPage = ref(1)
-    const pageSize = ref(10)
-    const sortKey = ref('tanggal_selesai')
-    const sortOrder = ref('desc') // 'asc' or 'desc'
+    const currentPage = ref(1);
+    const pageSize = ref(10);
+    const sortKey = ref("tanggal_selesai");
+    const sortOrder = ref("desc"); // 'asc' or 'desc'
 
     // Search and sort state for reports
-    const reportSearch = ref('')
-    const reportSortKey = ref('tanggal')
-    const reportSortOrder = ref('desc')
+    const reportSearch = ref("");
+    const reportSortKey = ref("tanggal");
+    const reportSortOrder = ref("desc");
     // Filtered reports by search
     const filteredReports = computed(() => {
-      if (!reportSearch.value) return reports.value
-      const term = reportSearch.value.toLowerCase()
+      if (!reportSearch.value) return reports.value;
+      const term = reportSearch.value.toLowerCase();
       return reports.value.filter(
         (r) =>
           (r.nama_mesin && r.nama_mesin.toLowerCase().includes(term)) ||
@@ -500,222 +500,230 @@ export default {
             r.detail_kerusakan.toLowerCase().includes(term)) ||
           (r.pelapor && r.pelapor.toLowerCase().includes(term)) ||
           (r.status && r.status.toLowerCase().includes(term))
-      )
-    })
+      );
+    });
     // Sorted reports
     const sortedReports = computed(() => {
       if (!filteredReports.value.length || !reportSortKey.value)
-        return filteredReports.value
+        return filteredReports.value;
       return [...filteredReports.value].sort((a, b) => {
-        let valA = a[reportSortKey.value]
-        let valB = b[reportSortKey.value]
-        if (valA == null) valA = ''
-        if (valB == null) valB = ''
-        if (reportSortKey.value.includes('tanggal')) {
-          valA = new Date(valA)
-          valB = new Date(valB)
+        let valA = a[reportSortKey.value];
+        let valB = b[reportSortKey.value];
+        if (valA == null) valA = "";
+        if (valB == null) valB = "";
+        if (reportSortKey.value.includes("tanggal")) {
+          valA = new Date(valA);
+          valB = new Date(valB);
         }
-        if (valA < valB) return reportSortOrder.value === 'asc' ? -1 : 1
-        if (valA > valB) return reportSortOrder.value === 'asc' ? 1 : -1
-        return 0
-      })
-    })
+        if (valA < valB) return reportSortOrder.value === "asc" ? -1 : 1;
+        if (valA > valB) return reportSortOrder.value === "asc" ? 1 : -1;
+        return 0;
+      });
+    });
     // Paginated reports (use sortedReports)
     const paginatedReports = computed(() => {
-      const start = (reportPage.value - 1) * reportPageSize.value
-      return sortedReports.value.slice(start, start + reportPageSize.value)
-    })
+      const start = (reportPage.value - 1) * reportPageSize.value;
+      return sortedReports.value.slice(start, start + reportPageSize.value);
+    });
     const reportTotalPages = computed(() =>
       Math.ceil(sortedReports.value.length / reportPageSize.value)
-    )
+    );
     const setReportSort = (key) => {
       if (reportSortKey.value === key) {
-        reportSortOrder.value = reportSortOrder.value === 'asc' ? 'desc' : 'asc'
+        reportSortOrder.value =
+          reportSortOrder.value === "asc" ? "desc" : "asc";
       } else {
-        reportSortKey.value = key
-        reportSortOrder.value = 'asc'
+        reportSortKey.value = key;
+        reportSortOrder.value = "asc";
       }
-    }
+    };
 
     // Pagination for laporan kerusakan (reports)
-    const reportPage = ref(1)
-    const reportPageSize = ref(10)
+    const reportPage = ref(1);
+    const reportPageSize = ref(10);
     const goToReportPage = (page) => {
-      if (page >= 1 && page <= reportTotalPages.value) reportPage.value = page
-    }
+      if (page >= 1 && page <= reportTotalPages.value) reportPage.value = page;
+    };
 
     // Sorting logic
     const sortedRepairs = computed(() => {
-      if (!repairs.value.length || !sortKey.value) return repairs.value
+      if (!repairs.value.length || !sortKey.value) return repairs.value;
       return [...repairs.value].sort((a, b) => {
-        let valA = a[sortKey.value]
-        let valB = b[sortKey.value]
+        let valA = a[sortKey.value];
+        let valB = b[sortKey.value];
         // Handle null/undefined
-        if (valA == null) valA = ''
-        if (valB == null) valB = ''
+        if (valA == null) valA = "";
+        if (valB == null) valB = "";
         // Date sort
-        if (sortKey.value.includes('tanggal')) {
-          valA = new Date(valA)
-          valB = new Date(valB)
+        if (sortKey.value.includes("tanggal")) {
+          valA = new Date(valA);
+          valB = new Date(valB);
         }
-        if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
-        if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
-        return 0
-      })
-    })
+        if (valA < valB) return sortOrder.value === "asc" ? -1 : 1;
+        if (valA > valB) return sortOrder.value === "asc" ? 1 : -1;
+        return 0;
+      });
+    });
     // Pagination logic
     const paginatedRepairs = computed(() => {
-      const start = (currentPage.value - 1) * pageSize.value
-      return sortedRepairs.value.slice(start, start + pageSize.value)
-    })
+      const start = (currentPage.value - 1) * pageSize.value;
+      return sortedRepairs.value.slice(start, start + pageSize.value);
+    });
     const totalPages = computed(() =>
       Math.ceil(repairs.value.length / pageSize.value)
-    )
+    );
     const setSort = (key) => {
       if (sortKey.value === key) {
-        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+        sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
       } else {
-        sortKey.value = key
-        sortOrder.value = 'asc'
+        sortKey.value = key;
+        sortOrder.value = "asc";
       }
-    }
+    };
     const goToPage = (page) => {
-      if (page >= 1 && page <= totalPages.value) currentPage.value = page
-    }
+      if (page >= 1 && page <= totalPages.value) currentPage.value = page;
+    };
 
     const fetchReports = async () => {
-      const { data } = await axios.get('/api/electrical')
-      reports.value = data.data // No filter, show all reports
-      reportPage.value = 1 // Reset to first page on new data
-    }
+      const { data } = await axios.get("http://wo-backend:5000/api/electrical");
+      reports.value = data.data; // No filter, show all reports
+      reportPage.value = 1; // Reset to first page on new data
+    };
 
     const fetchRepairs = async (reportId) => {
-      const { data } = await axios.get(`/api/repairs?report_id=${reportId}`)
-      repairs.value = data.data
-      currentPage.value = 1 // Reset to first page on new data
-    }
+      const { data } = await axios.get(
+        `http://wo-backend:5000/api/repairs?report_id=${reportId}`
+      );
+      repairs.value = data.data;
+      currentPage.value = 1; // Reset to first page on new data
+    };
 
     const selectReport = async (id) => {
-      selectedReportId.value = id
-      await fetchRepairs(id)
-      resetForm()
-    }
+      selectedReportId.value = id;
+      await fetchRepairs(id);
+      resetForm();
+    };
 
     const editRepair = (repair) => {
-      Object.assign(form, repair)
-      if (typeof repair.nama_teknisi === 'string') {
+      Object.assign(form, repair);
+      if (typeof repair.nama_teknisi === "string") {
         form.nama_teknisi = repair.nama_teknisi
-          .split(',')
+          .split(",")
           .map((s) => s.trim())
-          .filter(Boolean)
+          .filter(Boolean);
       }
-    }
+    };
 
     const deleteRepair = async (id) => {
-      if (confirm('Yakin ingin menghapus perbaikan ini?')) {
+      if (confirm("Yakin ingin menghapus perbaikan ini?")) {
         try {
-          await axios.delete(`/api/electrical/${id}`)
-          await fetchRepairs(selectedReportId.value)
-          await fetchReports() // Refresh reports to show updated status
-          resetForm()
-          window.$toast.success('Berhasil!', 'Perbaikan berhasil dihapus')
+          await axios.delete(`http://wo-backend:5000/api/electrical/${id}`);
+          await fetchRepairs(selectedReportId.value);
+          await fetchReports(); // Refresh reports to show updated status
+          resetForm();
+          window.$toast.success("Berhasil!", "Perbaikan berhasil dihapus");
         } catch (error) {
-          window.$toast.error('Gagal!', 'Gagal menghapus perbaikan')
-          console.error(error)
+          window.$toast.error("Gagal!", "Gagal menghapus perbaikan");
+          console.error(error);
         }
       }
-    }
+    };
 
     const resetForm = () => {
       Object.assign(form, {
         id: null,
-        detail_perbaikan: '',
-        waktu_perbaikan_mulai: '',
-        waktu_perbaikan_selesai: '',
-        tanggal_selesai: '',
-        spare_part: '',
+        detail_perbaikan: "",
+        waktu_perbaikan_mulai: "",
+        waktu_perbaikan_selesai: "",
+        tanggal_selesai: "",
+        spare_part: "",
         nama_teknisi: [],
-        status: '',
-        keterangan_tambahan: '',
-      })
-    }
+        status: "",
+        keterangan_tambahan: "",
+      });
+    };
 
     const handleSubmit = async () => {
       try {
-        const cleanForm = { ...form }
+        const cleanForm = { ...form };
 
         // Format date fields
         if (cleanForm.tanggal_selesai) {
           if (!/^\d{4}-\d{2}-\d{2}$/.test(cleanForm.tanggal_selesai)) {
-            const d = new Date(cleanForm.tanggal_selesai)
+            const d = new Date(cleanForm.tanggal_selesai);
             if (!isNaN(d)) {
-              cleanForm.tanggal_selesai = d.toISOString().slice(0, 10)
+              cleanForm.tanggal_selesai = d.toISOString().slice(0, 10);
             } else {
-              cleanForm.tanggal_selesai = null
+              cleanForm.tanggal_selesai = null;
             }
           }
         } else {
-          cleanForm.tanggal_selesai = null
+          cleanForm.tanggal_selesai = null;
         }
 
         // Format time fields
         if (!cleanForm.waktu_perbaikan_mulai)
-          cleanForm.waktu_perbaikan_mulai = null
+          cleanForm.waktu_perbaikan_mulai = null;
         if (!cleanForm.waktu_perbaikan_selesai)
-          cleanForm.waktu_perbaikan_selesai = null
+          cleanForm.waktu_perbaikan_selesai = null;
 
-        cleanForm.report_id = selectedReportId.value
+        cleanForm.report_id = selectedReportId.value;
 
         // Serialize nama_teknisi array to string
         cleanForm.nama_teknisi = Array.isArray(cleanForm.nama_teknisi)
-          ? cleanForm.nama_teknisi.join(',')
-          : cleanForm.nama_teknisi
+          ? cleanForm.nama_teknisi.join(",")
+          : cleanForm.nama_teknisi;
 
         if (form.id) {
-          await axios.put(`/api/electrical/${form.id}`, cleanForm)
-          window.$toast.success('Berhasil!', 'Perbaikan berhasil diperbarui')
+          await axios.put(
+            `http://wo-backend:5000/api/electrical/${form.id}`,
+            cleanForm
+          );
+          window.$toast.success("Berhasil!", "Perbaikan berhasil diperbarui");
         } else {
-          await axios.post('/api/repairs', cleanForm)
-          window.$toast.success('Berhasil!', 'Perbaikan berhasil ditambahkan')
+          await axios.post("http://wo-backend:5000/api/repairs", cleanForm);
+          window.$toast.success("Berhasil!", "Perbaikan berhasil ditambahkan");
         }
-        await fetchRepairs(selectedReportId.value)
-        await fetchReports() // Refresh reports to show updated status
-        resetForm()
+        await fetchRepairs(selectedReportId.value);
+        await fetchReports(); // Refresh reports to show updated status
+        resetForm();
       } catch (error) {
         window.$toast.error(
-          'Gagal!',
-          'Gagal menyimpan perbaikan. Pastikan data sudah benar.'
-        )
-        console.error(error)
+          "Gagal!",
+          "Gagal menyimpan perbaikan. Pastikan data sudah benar."
+        );
+        console.error(error);
       }
-    }
+    };
 
     const formatDateUTC = (dateStr) => {
-      if (!dateStr) return ''
-      const date = new Date(dateStr)
-      return date.toISOString().slice(0, 10)
-    }
+      if (!dateStr) return "";
+      const date = new Date(dateStr);
+      return date.toISOString().slice(0, 10);
+    };
 
     const statusClass = (status) => {
-      if (status === 'Selesai')
-        return 'bg-green-200 text-green-800 font-semibold px-2 py-1 rounded'
-      if (status === 'Proses')
-        return 'bg-yellow-200 text-yellow-800 font-semibold px-2 py-1 rounded'
-      if (status === 'Pending')
-        return 'bg-orange-200 text-orange-800 font-semibold px-2 py-1 rounded'
-      return 'bg-red-200 text-red-800 font-semibold px-2 py-1 rounded'
-    }
+      if (status === "Selesai")
+        return "bg-green-200 text-green-800 font-semibold px-2 py-1 rounded";
+      if (status === "Proses")
+        return "bg-yellow-200 text-yellow-800 font-semibold px-2 py-1 rounded";
+      if (status === "Pending")
+        return "bg-orange-200 text-orange-800 font-semibold px-2 py-1 rounded";
+      return "bg-red-200 text-red-800 font-semibold px-2 py-1 rounded";
+    };
 
     onMounted(async () => {
-      await fetchReports()
+      await fetchReports();
       // Fetch technicians from backend
       try {
-        const { data } = await axios.get('/api/technicians')
-        teknisiList.value = data.data.map((t) => t.nama)
+        const { data } = await axios.get(
+          "http://wo-backend:5000/api/technicians"
+        );
+        teknisiList.value = data.data.map((t) => t.nama);
       } catch (e) {
-        teknisiList.value = []
+        teknisiList.value = [];
       }
-    })
+    });
 
     return {
       reports,
@@ -751,9 +759,9 @@ export default {
       filteredReports,
       sortedReports,
       setReportSort,
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>
