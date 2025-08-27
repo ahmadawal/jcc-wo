@@ -11,8 +11,8 @@ services:
   backend:
     build: ./server
     container_name: backend
-    expose:
-      - "5000"
+    ports:
+      - "5000:5000"
     environment:
       - NODE_ENV=production
       - PORT=5000
@@ -20,5 +20,5 @@ services:
       - DB_USER=devadmin
       - DB_PASSWORD=devadmin
       - DB_NAME=wo_app
-      - DB_PORT=3308
+      - DB_PORT=3306
     restart: always
