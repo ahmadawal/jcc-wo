@@ -21,6 +21,4 @@ services:
       - DB_PASSWORD=devadmin
       - DB_NAME=wo_app
       - DB_PORT=3308
-    depends_on:
-      - mysql
     restart: always
