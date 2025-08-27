@@ -73,13 +73,14 @@
             <option value="SS">SS</option>
             <option value="SC">SC</option>
             <option value="GA">GA</option>
+            <option value="PE">PE</option>
           </select>
         </div>
 
         <div>
           <label class="block text-sm font-medium mb-1">Mesin</label>
           <input
-            v-if="['QA', 'SS', 'GA', 'SC'].includes(form.plant)"
+            v-if="['QA', 'SS', 'GA', 'SC', 'PE'].includes(form.plant)"
             v-model="form.nama_mesin"
             type="text"
             placeholder="Masukkan nama mesin"
@@ -552,7 +553,7 @@ export default {
         if (!newPlant) return;
 
         // Skip execution for QA, SS, and GA
-        if (["QA", "SS", "GA", "SC"].includes(newPlant)) return;
+        if (["QA", "SS", "GA", "SC", "PE"].includes(newPlant)) return;
 
         try {
           const { data } = await axios.get(
